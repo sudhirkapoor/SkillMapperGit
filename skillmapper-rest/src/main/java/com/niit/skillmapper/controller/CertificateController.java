@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.niit.skillmapper.dao.CertificationDAOInterface;
+import com.niit.skillmapper.model.Certification;
 import com.niit.skillmapper.model.Employee;
 
 @RestController
@@ -25,77 +26,98 @@ class CertificateController {
 	@Autowired
 	CertificationDAOInterface certificationDAOInterface;
 
-	@GetMapping("//{role}")
-	public ResponseEntity<Object> getEmployeeByRole(@PathVariable("role") String role, HttpSession session) {
-		List<Employee> employeeList = null;
+	@GetMapping("/certificatebyname/{certificateName}")
+	public ResponseEntity<Object> getCertificatesByName(@PathVariable("certificateName") String certificateName,
+			HttpSession session) {
+		List<Certification> certificateList = null;
 		if (session.getAttribute("loggedInUser") != null) {
-			employeeList = employeeDAOInterface.getEmployeeByRole(role);
-			if (employeeList == null)
+			certificateList = certificationDAOInterface.getCertificatesByName(certificateName);
+			if (certificateList == null)
 				return new ResponseEntity<Object>("No Employee Found", HttpStatus.NOT_FOUND);
 			else {
-				employeeDAOInterface.getEmployeeByRole(role);
+				certificationDAOInterface.getCertificatesByName(certificateName);
+				return new ResponseEntity<Object>("Reterived Certificate by name", HttpStatus.OK);
+			}
+		} else {
+			return new ResponseEntity<Object>("You are Not Authorized, Please login first", HttpStatus.UNAUTHORIZED);
+		}
+	}
+
+
+	@PutMapping("/insert")
+	public ResponseEntity<Object> insertCertification(@RequestBody Certification certification, HttpSession session) {
+		if (session.getAttribute("loggedInUser") != null) {
+			if (certification != null) {
+				certificationDAOInterface.addCertification(certification);
+				return new ResponseEntity<Object>(certification, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<Object>("Records inserted", HttpStatus.CONFLICT);
+			}
+		} else {
+			return new ResponseEntity<Object>("You are Not Authorized, Please login first", HttpStatus.UNAUTHORIZED);
+		}
+	}
+
+	@DeleteMapping("/delete/{certificateId}")
+	public ResponseEntity<Object> deleteCertificate(@PathVariable("certificateId") int certificateId,
+			HttpSession session) {
+		if (session.getAttribute("loggedInUser") != null) {
+			if (certificateId != 0) {
+				certificationDAOInterface.deleteCertification(certificateId);
+				return new ResponseEntity<Object>("Certificate is deleted successfully", HttpStatus.OK);
+			} else {
+				return new ResponseEntity<Object>("Certificate does not exists", HttpStatus.CONFLICT);
+			}
+		} else {
+			return new ResponseEntity<Object>("You are Not Authorized, Please login first", HttpStatus.UNAUTHORIZED);
+		}
+	}
+
+	@GetMapping("/getallcertificate")
+	public ResponseEntity<Object> getAllCertificate(HttpSession session) {
+
+		if (session.getAttribute("loggedInUser") != null) {
+			return new ResponseEntity<Object>(certificationDAOInterface.getAllCertificates(), HttpStatus.OK);
+
+		} else {
+			return new ResponseEntity<Object>("You are Not Authorized, Please login first", HttpStatus.UNAUTHORIZED);
+		}
+
+	}
+
+	@GetMapping("/getcertificatebyempid{employeeId}")
+	public ResponseEntity<Object> getCertificationByEmployeeId(@PathVariable("employeeId") int employeeId,
+			HttpSession session) {
+
+		List<Certification> certificateList = null;
+		if (session.getAttribute("loggedInUser") != null) {
+			certificateList = certificationDAOInterface.getCertificatesByEmployeeId(employeeId);
+			if (certificateList == null)
+				return new ResponseEntity<Object>("No Employee Found", HttpStatus.NOT_FOUND);
+			else {
+				certificationDAOInterface.getCertificatesByEmployeeId(employeeId);
+				return new ResponseEntity<Object>("Certificate reterived", HttpStatus.OK);
+			}
+		} else {
+			return new ResponseEntity<Object>("You are Not Authorized, Please login first", HttpStatus.UNAUTHORIZED);
+		}
+	}
+
+	@GetMapping("/getcertificatebycertifid{certificationId}")
+	public ResponseEntity<Object> getcertificationById(@PathVariable("certificationId") int certificationId,
+			HttpSession session) {
+
+		Certification certificate = null;
+		if (session.getAttribute("loggedInUser") != null) {
+			certificate = certificationDAOInterface.getCertificateById(certificationId);
+			if (certificate == null)
+				return new ResponseEntity<Object>("No Employee Found", HttpStatus.NOT_FOUND);
+			else {
+				certificationDAOInterface.getCertificateById(certificationId);
 				return new ResponseEntity<Object>("Employee reterived by role", HttpStatus.OK);
 			}
 		} else {
 			return new ResponseEntity<Object>("You are Not Authorized, Please login first", HttpStatus.UNAUTHORIZED);
 		}
 	}
-
-	@PutMapping("/update")
-	public ResponseEntity<Object> updateEmployee(@RequestBody Employee employee, HttpSession session) {
-		if (session.getAttribute("loggedInUser") != null) {
-			if (certificationDAOInterface.getEmployeeById(employee.getEmployeeId()) != null) {
-				employeeDAOInterface.updateEmployee(employee);
-				return new ResponseEntity<Object>(employee, HttpStatus.OK);
-			} else {
-				return new ResponseEntity<Object>("Employee does not exists", HttpStatus.CONFLICT);
-			}
-		} else {
-			return new ResponseEntity<Object>("You are Not Authorized, Please login first", HttpStatus.UNAUTHORIZED);
-		}
-	}
-
-	@PutMapping("/insert")
-	public ResponseEntity<Object> insertEmployee(@RequestBody Employee employee, HttpSession session) {
-		if (session.getAttribute("loggedInUser") != null) {
-			if (employee != null) {
-				employeeDAOInterface.insertEmployee(employee);
-				return new ResponseEntity<Object>(employee, HttpStatus.OK);
-			} else {
-				return new ResponseEntity<Object>("Employee does not exists", HttpStatus.CONFLICT);
-			}
-		} else {
-			return new ResponseEntity<Object>("You are Not Authorized, Please login first", HttpStatus.UNAUTHORIZED);
-		}
-	}
-
-	@DeleteMapping("/delete/{employeeId}")
-	public ResponseEntity<Object> deleteEmployee(@PathVariable("employeeId") int employeeId, HttpSession session) {
-		if (session.getAttribute("loggedInUser") != null) {
-			if (employeeDAOInterface.getEmployeeById(employeeId) != null) {
-				employeeDAOInterface.deleteEmployee(employeeId);
-				return new ResponseEntity<Object>("Employee is deleted successfully", HttpStatus.OK);
-			} else {
-				return new ResponseEntity<Object>("Employee does not exists", HttpStatus.NOT_FOUND);
-			}
-		} else {
-			return new ResponseEntity<Object>("You are Not Authorized, Please login first", HttpStatus.UNAUTHORIZED);
-		}
-	}
-
-	@GetMapping("/getallemployee")
-	public ResponseEntity<List<Employee>> getAllEmployee() {
-		return new ResponseEntity<List<Employee>>(employeeDAOInterface.getAllEmployee(), HttpStatus.OK);
-	}
-
-	@GetMapping("/{employeeId}")
-	public ResponseEntity<Object> getEmployeeById(@PathVariable("employeeId") int employeeId, HttpSession session) {
-
-		Employee employee = employeeDAOInterface.getEmployeeById(employeeId);
-		if (employee == null)
-			return new ResponseEntity<Object>("No User Found", HttpStatus.NOT_FOUND);
-		else
-			return new ResponseEntity<Object>(employee, HttpStatus.OK);
-	}
-
 }
