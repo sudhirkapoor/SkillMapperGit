@@ -1,4 +1,4 @@
-package com.niit.skillmapper;
+/*package com.niit.skillmapper;
 
 import java.util.List;
 
@@ -11,11 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.niit.skillmapper.config.AppInitializer;
 import com.niit.skillmapper.config.HibernateConfiguration;
 import com.niit.skillmapper.dao.daoimpl.EmployeeDAO;
 import com.niit.skillmapper.dao.EmployeeDAOInterface;
-import com.niit.skillmapper.model.Employees;
+import com.niit.skillmapper.model.Employee;
 
 @RunWith(SpringRunner.class)
 @SpringJUnitConfig(classes = HibernateConfiguration.class)
@@ -25,20 +24,30 @@ public class EmployeeTestCase {
 
 	@Test
 	public void testAddEmployee() {
-		Employees emp = new Employees();
-		emp.setEmpid(1);
-		emp.setEmpname("Anjali");
-		emp.setBusinessunit("CEB");
-		emp.setDateofjoining("15/05/2009");
+		Employee emp = new Employee();
+		emp.setEmployeeId(3);
+		emp.setEmployeeName("Aradhna");
+		emp.setBusinessUnit("CEB");
+		emp.setDateOfJoining("15/05/2009");
 		emp.setDepartment("Own Centre");
-		emp.setEmailid("Anjali@niit.com");
-		emp.setManagerid(1);
+		emp.setEmailId("Aradhna@niit.com");
+		emp.setLocation("Delhi");
+		emp.setManagerId(1);
 		emp.setPassword("password");
 		emp.setRegion("R02");
 		emp.setRole("AL");
 		emp.setStatus("Inactive");
-		emp.setTtlstudenttaught(5000);
-		emp.setTtlyearofexp(9);
+		emp.setTotalStudentsTaught(5000);
+		emp.setTotalYearsOfExp(9);
+		
+		emp.setHigherSchool("12 pass");
+		emp.setInterClassDetail("10th class");
+		emp.setGraduation("BCA");
+		
+		emp.setProjectUnderTaken("Flipkart");
+		emp.setGender("Female");
+		emp.setContactNumber("9898989898");
+		
 		Assert.assertEquals("Employee is added successfully",1, employeeDAOInterface.insertEmployee(emp));
 	}
 	
@@ -75,4 +84,13 @@ public class EmployeeTestCase {
 		List<Employees> emplist=null;
 		emplist=employeeDAOInterface.getAllEmployee();
 	}
+	
+	@Test
+	public void testgetEmployeeByRegion() {
+		List<Employee> emplist=null;
+		emplist=employeeDAOInterface.getEmployeeByRegion("Delhi");
+		Assert.assertNotNull("Values are reterived", emplist);
+	}
+	
 }
+*/

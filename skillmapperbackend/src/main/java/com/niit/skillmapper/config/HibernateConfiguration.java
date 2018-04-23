@@ -16,10 +16,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.niit.skillmapper.model.*;
 
-
-
 @Configuration
-@ComponentScan(basePackages="com.niit.skillmapper")
+@ComponentScan(basePackages = "com.niit.skillmapper")
 @EnableTransactionManagement
 public class HibernateConfiguration {
 
@@ -31,28 +29,26 @@ public class HibernateConfiguration {
 	 * 
 	 */
 	private final static String h2_URL = "jdbc:h2:~/skillmapper";
-//	private final static String h2_URL = "jdbc:h2:tcp://localhost/~/skill";
 	private final static String h2_DRIVER_CLASS = "org.h2.Driver";
 	private final static String h2_userName = "sa";
 	private final static String h2_password = "";
-	private final static String h2_dailect="org.hibernate.dialect.H2Dialect";
+	private final static String h2_dailect = "org.hibernate.dialect.H2Dialect";
 
 	/*
 	 * it'll retrun the sessionFactory Object
 	 */
 
-	@Bean(name="sessionFactory")
+	@Bean(name = "sessionFactory")
 	public SessionFactory sessionFactory(DataSource dataSource) {
-		System.out.println("Session Factory");
 		LocalSessionFactoryBuilder builder = new LocalSessionFactoryBuilder(dataSource);
 		builder.addProperties(hibernateProperties());
 		builder.scanPackages("com.niit.skillmapper");
-		builder.addAnnotatedClass(Employees.class);
+		builder.addAnnotatedClass(Employee.class);
 		builder.addAnnotatedClass(Role.class);
-		builder.addAnnotatedClass(EmployeeSkills.class);
-		builder.addAnnotatedClass(EmployeeCertification.class);
-		
-//		
+		builder.addAnnotatedClass(Skill.class);
+		builder.addAnnotatedClass(Certification.class);
+
+		//
 		return builder.buildSessionFactory();
 	}
 
@@ -60,22 +56,17 @@ public class HibernateConfiguration {
 	 * it'll give the DataSource object to SessionFactory
 	 */
 
-	@Bean(name="dataSource")
+	@Bean(name = "dataSource")
 	public DataSource dataSource() {
-		System.out.println("DataSource start");
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(h2_DRIVER_CLASS);
-		System.out.println("DataSource start1");
 		dataSource.setUrl(h2_URL);
-		System.out.println("DataSource start2");
 		dataSource.setUsername(h2_userName);
 		dataSource.setPassword(h2_password);
-		System.out.println("DataSource end");
 		return dataSource;
 	}
 
 	private Properties hibernateProperties() {
-		System.out.println("properties");
 		Properties properties = new Properties();
 		properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		properties.put("hibernate.show_sql", "true");

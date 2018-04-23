@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.niit.skillmapper.dao.SkillDAOInterface;
-import com.niit.skillmapper.model.Employees;
+import com.niit.skillmapper.model.Employee;
 import com.niit.skillmapper.model.Skill;
 
 @Repository
@@ -39,72 +39,26 @@ public class SkillDAO implements SkillDAOInterface {
 		}
 	}
 
-	public boolean addEmployeeSkill(int skillId, int employeeId) {
-		try {
+	
 
-			/*
-			 * preparedStatement =
-			 * connection.prepareStatement("insert into EmployeeSkills values(?,?)");
-			 * preparedStatement.setInt(1, skill.getSkillId());
-			 * preparedStatement.setString(2, skill.getSkillName());
-			 * preparedStatement.execute();
-			 */
-			return true;
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return false;
-		}
-	}
-
-	public List<Employees> getAllEmployeesBySkillName(String skillName) {
-		Skill skill = getSkillByName(skillName);
-		List<Employees> employees = new ArrayList<Employees>();
-		String sql = "select * from Employee e join EmployeeSkills es on e.employeeid=es.employeeid where skillid='"
-				+ skill.getSkillId() + "'";
-		try {
-			/*
-			 * stmt = connection.createStatement(); resultSet = stmt.executeQuery(sql);
-			 * while (resultSet.next()) { Employees emp = new Employees();
-			 * emp.setEmpid(resultSet.getInt("employeeId"));
-			 * emp.setEmpname(resultSet.getString("employeeName"));
-			 * emp.setEmailid(resultSet.getString("emailId"));
-			 * emp.setManagerid(resultSet.getInt("managerId"));
-			 * emp.setTtlyearofexp(resultSet.getDouble("totalExperiance"));
-			 * emp.setTtlstudenttaught(resultSet.getInt("totalStudentsTaught"));
-			 * employees.add(emp); }
-			 */
-			return employees;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return null;
-		}
-
-	}
+	
 
 	public List<Skill> getAllSkillsOfEmployee(int employeeId) {
-		List<Skill> skills = new ArrayList<Skill>();
-		String sql = "select * from Skill s join EmployeeSkills es on s.skillId=es.skillId where employeeId='"
-				+ employeeId + "'";
-		try {
-			/*
-			 * stmt = connection.createStatement(); resultSet = stmt.executeQuery(sql);
-			 * while (resultSet.next()) { Skill skill = new Skill();
-			 * skill.setSkillId(resultSet.getInt("skillId"));
-			 * skill.setSkillName(resultSet.getString("skillName")); skills.add(skill); }
-			 */
-			return skills;
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Skill where employeeId='" + employeeId + "'");
+		List<Skill> skillList= query.getResultList();
+		if (skillList != null) {
+			return skillList;
+		} else {
 			return null;
 		}
 	}
 
-	public boolean removeSkill(Skill skill) {
+	public boolean removeSkill(int skillId) {
 		try {
 
 			Session session = sessionFactory.getCurrentSession();
-			Skill sk = (Skill) session.load(Skill.class, new Integer(skill.getSkillId()));
+			Skill sk = (Skill) session.load(Skill.class, skillId);
 			session.delete(sk);
 			return true;
 		} catch (Exception e) {
@@ -114,19 +68,51 @@ public class SkillDAO implements SkillDAOInterface {
 
 	}
 
-	public boolean deleteEmployeeSkill(int skillId, int employeeId) {
+
+
+
+
+	@Override
+	public boolean updateSkill(Skill skill) {
 		// TODO Auto-generated method stub
+		try {
+			sessionFactory.getCurrentSession().update(skill);
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 		return false;
 	}
 
-	private Skill getSkillByName(String skillName) {
+
+
+
+
+	@Override
+	public List<Skill> getSkillsById(int skillId) {
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from Skill where skillname='" + skillName + "'");
-		Skill skill = (Skill) query.getSingleResult();
-		if (skill != null) {
-			return skill;
+		Query query = session.createQuery("from Skill where skillId='" + skillId + "'");
+		List<Skill> skillList= query.getResultList();
+		if (skillList != null) {
+			return skillList;
 		} else {
 			return null;
 		}
 	}
+
+
+
+
+
+	@Override
+	public List<Skill> getAllSkills() {
+		Query query = sessionFactory.getCurrentSession().createQuery("from Skill");
+
+		List<Skill> skillList = query.getResultList();
+		
+		return skillList;
+	}
+
+	
 }

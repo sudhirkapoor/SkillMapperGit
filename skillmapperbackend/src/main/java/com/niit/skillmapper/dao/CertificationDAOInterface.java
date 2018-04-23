@@ -3,12 +3,15 @@ package com.niit.skillmapper.dao;
 import java.util.List;
 
 import com.niit.skillmapper.model.Certification;
-import com.niit.skillmapper.model.Employees;
+import com.niit.skillmapper.model.Employee;
 
 public interface CertificationDAOInterface {
 	boolean addCertification(Certification certification);
-	List<Employees> getAllEmployeesByCertificationName(String certificationName);
-	List<Certification> getCertificationByEmployeeId(int employeeId);
-	boolean deleteCertification(int employeeId,int certificationId);
+	boolean deleteCertification(int certificateId);
+	boolean updateCertification(Certification certification);
+	Certification getCertificateById(int certificationId);
+	List<Certification> getAllCertificates();
+	List<Certification> getCertificatesByEmployeeId(int employeeId);
+	List<Certification> getCertificatesByName(String certificationName);
 
 }

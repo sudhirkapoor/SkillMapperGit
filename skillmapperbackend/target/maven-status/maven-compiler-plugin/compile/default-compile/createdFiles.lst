@@ -1,0 +1,15 @@
+com\niit\skillmapper\utility\ConnectionProvider.class
+com\niit\skillmapper\dao\CertificationDAOInterface.class
+com\niit\skillmapper\dao\daoimpl\CertificationDAO.class
+com\niit\skillmapper\config\HibernateConfiguration.class
+com\niit\skillmapper\model\Skill.class
+com\niit\skillmapper\dao\daoimpl\EmployeeDAO.class
+com\niit\skillmapper\dao\daoimpl\SkillDAO.class
+com\niit\skillmapper\dao\EmployeeDAOInterface.class
+com\niit\skillmapper\model\Certification.class
+com\niit\skillmapper\dao\daoimpl\RoleDAO.class
+com\niit\skillmapper\model\Employee.class
+com\niit\skillmapper\model\Role.class
+com\niit\skillmapper\dao\SkillDAOInterface.class
+com\niit\skillmapperbackend\App.class
+com\niit\skillmapper\dao\RoleDAOInterface.class

@@ -7,18 +7,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Query;
+
 import javax.transaction.Transactional;
 
-import org.hibernate.Session;
+import org.hibernate.*;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.niit.skillmapper.dao.CertificationDAOInterface;
 import com.niit.skillmapper.model.Certification;
-import com.niit.skillmapper.model.EmployeeCertification;
-import com.niit.skillmapper.model.Employees;
+import com.niit.skillmapper.model.Employee;
 
 
 @Repository
@@ -27,71 +26,97 @@ public class CertificationDAO implements CertificationDAOInterface{
 
 	@Autowired
 	private SessionFactory sessionFactory;
-	
-
-	
+	@Override
 	public boolean addCertification(Certification certification) {
-		try
-		{
+		try {
 			sessionFactory.getCurrentSession().save(certification);
 			return true;
-		}
-		catch(Exception ex)
-		{
+		} 
+		catch (Exception ex) {
 			ex.printStackTrace();
 			return false;
 		}
 	}
 
-	public List<Employees> getAllEmployeesByCertificationName(String certificationName) {
-		List<Employees> employeeList=null;
-		List<Certification> certificateList=new ArrayList<Certification>(); 
-		List<EmployeeCertification> employeeCertificateList=new ArrayList<EmployeeCertification>();
-		String hql = "select p from Conn c   inner join c.Patient  p  inner join c.Bill b  where b.Balance < :balance and p.FullName = 'John' ";
+	@Override
+	public boolean deleteCertification(int certificateId) {
 		try {
-
-			Session session = sessionFactory.getCurrentSession();
-			Query query=session.createQuery("from certification where empname='"+certificationName+"'");
-			certificateList=query.getResultList();
-			for (Certification certificate : certificateList) {
-				EmployeeCertification empcertif = (EmployeeCertification) session.load(EmployeeCertification.class, new Integer(certificate.getCertificationId()));
-				employeeCertificateList.add(empcertif);
-				
-			}
-			
-			for (EmployeeCertification employeeCertificate : employeeCertificateList) {
-				Employees emp = (Employees) session.load(Employees.class, new Integer(employeeCertificate.getEmpId()));
-				employeeList.add(emp);
-				
-			}
-			return employeeList;
-		} catch (Exception e) {
-			// TODO: handle exception
+			sessionFactory.getCurrentSession().delete(getCertificateById(certificateId));
+			return true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
 		}
-		return employeeList;
-	
 	}
 
-	
-	public List<Certification> getCertificationByEmployeeId(int employeeId) {
-		List<Certification> certificateList=null;
+	@Override
+	public boolean updateCertification(Certification certification) {
 		try {
-
-			Session session = sessionFactory.getCurrentSession();
-			Query query=session.createQuery("from certification where empid='"+employeeId+"'");
-			certificateList =query.getResultList();
-			
-			return certificateList;
-		} catch (Exception e) {
-			// TODO: handle exception
+			sessionFactory.getCurrentSession().update(certification);
+			return true;
+		} 
+		catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
 		}
-		return certificateList;
 	}
 
-	
-	public boolean deleteCertification(int employeeId, int certificationId) {
-		// TODO Auto-generated method stub
-		return false;
+	@Override
+	public Certification getCertificateById(int certificationId) {
+		try
+		{
+			return sessionFactory.getCurrentSession().get(Certification.class, certificationId);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public List<Certification> getAllCertificates() {
+		try
+		{
+			return sessionFactory.getCurrentSession().createQuery("FROM Certification").list();
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public List<Certification> getCertificatesByEmployeeId(int empId) {
+		try
+		{
+			Query query = sessionFactory.getCurrentSession().createQuery("from Certification where empId=:empId");
+			query.setInteger("empId", empId);
+			List<Certification> list = query.list();
+			return list;
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public List<Certification> getCertificatesByName(String certificationName) {
+		try
+		{
+			Query query = sessionFactory.getCurrentSession().createQuery("from Certification where certificationName=:certificationName");
+			query.setString("certificationName", certificationName);
+			List<Certification> list = query.list();
+			return list;
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			return null;
+		}
 	}
 
 }

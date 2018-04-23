@@ -13,12 +13,12 @@ public class Certification implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int certificationId;
 	private String certificationName;
 	private String technology;
+	private int employeeId;
 	public int getCertificationId() {
 		return certificationId;
 	}
@@ -36,6 +36,12 @@ public class Certification implements Serializable{
 	}
 	public void setTechnology(String technology) {
 		this.technology = technology;
+	}
+	public int getEmployeeId() {
+		return employeeId;
+	}
+	public void setEmployeeId(int employeeId) {
+		this.employeeId = employeeId;
 	}
 	
 }

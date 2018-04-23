@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.niit.skillmapper.dao.RoleDAOInterface;
-import com.niit.skillmapper.model.Employees;
+import com.niit.skillmapper.model.Employee;
 import com.niit.skillmapper.model.Role;
 
 @Repository
