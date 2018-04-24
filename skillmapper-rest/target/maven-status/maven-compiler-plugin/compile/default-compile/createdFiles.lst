@@ -1,4 +1,6 @@
+com\niit\skillmapper\controller\CertificateController.class
 com\niit\skillmapper\config\AppInitializer.class
+com\niit\skillmapper\controller\LoginValidationController.class
 com\niit\skillmapper\controller\EmployeeController.class
 com\niit\skillmapper\config\AppConfig.class
 com\niit\skillmapper\controller\SkillController.class

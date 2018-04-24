@@ -12,7 +12,9 @@ import java.util.ListIterator;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.*;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,13 +88,10 @@ private	SessionFactory sessionFactory;
 	}
 
 	public List<Employee> getAllEmployee() {
-		System.out.println("Employee DAO called");
 		Query query = sessionFactory.getCurrentSession().createQuery("from Employee");
 
 		List<Employee> employeelist = query.getResultList();
-		for (Employee employee : employeelist) {
-			System.out.println("Name:-" + employee.getEmployeeName());
-		}
+		
 		return employeelist;
 	}
 

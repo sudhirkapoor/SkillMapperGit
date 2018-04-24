@@ -39,7 +39,8 @@ public class EmployeeController {
 		if (employee == null)
 			return new ResponseEntity<Object>("No User Found", HttpStatus.NOT_FOUND);
 		else
-			return new ResponseEntity<Object>(employee, HttpStatus.OK);
+			
+			return new ResponseEntity<Object>(employeeDAOInterface.getEmployeeById(employeeId), HttpStatus.OK);
 	}
 
 	@GetMapping("/businessUnit/{businessUnit}")
@@ -67,8 +68,8 @@ public class EmployeeController {
 			if (employeeList == null)
 				return new ResponseEntity<Object>("No Employee Found", HttpStatus.NOT_FOUND);
 			else {
-		;
-				return new ResponseEntity<Object>("Employee reterived by department", HttpStatus.OK);
+				
+				return new ResponseEntity<Object>(employeeDAOInterface.getEmployeeByRegion(region), HttpStatus.OK);
 			}
 		} else {
 			return new ResponseEntity<Object>("You are Not Authorized, Please login first", HttpStatus.UNAUTHORIZED);
@@ -82,8 +83,8 @@ public class EmployeeController {
 			if (employeeList == null)
 				return new ResponseEntity<Object>("No Employee Found", HttpStatus.NOT_FOUND);
 			else {
-				employeeDAOInterface.getEmployeeByLocation(location);
-				return new ResponseEntity<Object>("Employee reterived by location", HttpStatus.OK);
+				
+				return new ResponseEntity<Object>(employeeDAOInterface.getEmployeeByLocation(location), HttpStatus.OK);
 			}
 		} else {
 			return new ResponseEntity<Object>("You are Not Authorized, Please login first", HttpStatus.UNAUTHORIZED);
@@ -99,8 +100,7 @@ public class EmployeeController {
 				if (employeeList == null)
 					return new ResponseEntity<Object>("No Employee Found", HttpStatus.NOT_FOUND);
 				else {
-					employeeDAOInterface.getEmployeeByLocation(department);
-					return new ResponseEntity<Object>("Employee reterived by department", HttpStatus.OK);
+					return new ResponseEntity<Object>(employeeDAOInterface.getEmployeeByLocation(department), HttpStatus.OK);
 				}
 			} else {
 				return new ResponseEntity<Object>("You are Not Authorized, Please login first", HttpStatus.UNAUTHORIZED);
@@ -116,8 +116,7 @@ public class EmployeeController {
 				if (employeeList == null)
 					return new ResponseEntity<Object>("No Employee Found", HttpStatus.NOT_FOUND);
 				else {
-					employeeDAOInterface.getEmployeeByRole(role);
-					return new ResponseEntity<Object>("Employee reterived by role", HttpStatus.OK);
+					return new ResponseEntity<Object>(employeeDAOInterface.getEmployeeByRole(role), HttpStatus.OK);
 				}
 			} else {
 				return new ResponseEntity<Object>("You are Not Authorized, Please login first", HttpStatus.UNAUTHORIZED);
@@ -131,8 +130,8 @@ public class EmployeeController {
 			HttpSession session) {
 		if (session.getAttribute("loggedInUser") != null) {
 			if (employeeDAOInterface.getEmployeeById(employee.getEmployeeId()) != null) {
-				employeeDAOInterface.updateEmployee(employee);
-				return new ResponseEntity<Object>(employee, HttpStatus.OK);
+				
+				return new ResponseEntity<Object>(employeeDAOInterface.updateEmployee(employee), HttpStatus.OK);
 			} else {
 				return new ResponseEntity<Object>("Employee does not exists", HttpStatus.CONFLICT);
 			}
@@ -148,8 +147,8 @@ public class EmployeeController {
 		{
 			if(employeeDAOInterface.getEmployeeById(employeeId)!=null)
 			{
-				employeeDAOInterface.approveEmployeeByHR(employeeId);			
-				return new ResponseEntity<Object>("Employee is deleted successfully" , HttpStatus.OK);
+				
+				return new ResponseEntity<Object>(employeeDAOInterface.approveEmployeeByHR(employeeId) , HttpStatus.OK);
 			}
 			else
 			{
@@ -165,8 +164,8 @@ public class EmployeeController {
 	public ResponseEntity<Object> insertEmployee(@RequestBody Employee employee,HttpSession session) {
 		if (session.getAttribute("loggedInUser") != null) {
 			if (employee != null) {
-				employeeDAOInterface.insertEmployee(employee);
-				return new ResponseEntity<Object>(employee, HttpStatus.OK);
+				
+				return new ResponseEntity<Object>(employeeDAOInterface.insertEmployee(employee), HttpStatus.OK);
 			} else {
 				return new ResponseEntity<Object>("Employee does not exists", HttpStatus.CONFLICT);
 			}
@@ -182,8 +181,8 @@ public class EmployeeController {
 			{
 				if(employeeDAOInterface.getEmployeeById(employeeId)!=null)
 				{
-					employeeDAOInterface.deleteEmployee(employeeId);			
-					return new ResponseEntity<Object>("Employee is deleted successfully" , HttpStatus.OK);
+								
+					return new ResponseEntity<Object>(employeeDAOInterface.deleteEmployee(employeeId), HttpStatus.OK);
 				}
 				else
 				{
@@ -196,5 +195,25 @@ public class EmployeeController {
 			}
 		}
 
+ 	@GetMapping("/skillname/{skillname}")
+	public ResponseEntity<Object> getAllEmployeesByMultipleSkillName(@PathVariable("skillname") String skillname, HttpSession session) {
+	 		List<Employee> employeeList=null;
+	 		if (session.getAttribute("loggedInUser") != null) {
+			employeeList = employeeDAOInterface.getAllEmployeesByMultipleSkillName(skillname);
+			for (Employee employee : employeeList) {
+				System.out.println(employee.getEmployeeName());
+			}
+			if (employeeList == null)
+				return new ResponseEntity<Object>("No Employee Found", HttpStatus.NOT_FOUND);
+			else {
+				return new ResponseEntity<Object>(employeeDAOInterface.getAllEmployeesByMultipleSkillName(skillname), HttpStatus.OK);
+			}
+		} else {
+			return new ResponseEntity<Object>("You are Not Authorized, Please login first", HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	
+	
 }
 	

@@ -53,7 +53,7 @@ public class EmployeeTestCase {
 	
 	@Test
 	public void testupdateEmployee() {
-		Employees emp = new Employees();
+		Employee emp = new Employee();
 		
 		emp.setEmpid(3);
 		emp.setEmpname("Sudhir Kapoor");
@@ -92,5 +92,10 @@ public class EmployeeTestCase {
 		Assert.assertNotNull("Values are reterived", emplist);
 	}
 	
+	@Test
+	public void testskill()
+	{
+		Assert.assertNotNull(employeeDAOInterface.getAllEmployeesByMultipleSkillName("Java"));
+	}
 }
 */
