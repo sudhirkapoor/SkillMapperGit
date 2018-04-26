@@ -29,6 +29,7 @@ public class HibernateConfiguration {
 	 * 
 	 */
 	private final static String h2_URL = "jdbc:h2:~/skillmapper";
+	//private final static String h2_URL = "jdbc:h2:~/skillmapperDB";
 	private final static String h2_DRIVER_CLASS = "org.h2.Driver";
 	private final static String h2_userName = "sa";
 	private final static String h2_password = "";

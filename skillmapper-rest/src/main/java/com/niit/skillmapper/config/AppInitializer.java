@@ -1,4 +1,6 @@
 package com.niit.skillmapper.config;
+import javax.servlet.Filter;
+import com.niit.skillmapper.config.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -25,5 +27,11 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 		log.debug("Starting of the Method getServletMappings");
 		return new String[]{ "/"};
 	}
+	@Override
+	protected Filter[] getServletFilters() {
+		Filter[] singleton = { new CORSFilter() };
+		return singleton;
+	}
+	
 
 }

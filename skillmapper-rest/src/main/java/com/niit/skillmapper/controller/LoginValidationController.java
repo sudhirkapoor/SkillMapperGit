@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.niit.skillmapper.dao.EmployeeDAOInterface;
-import com.niit.skillmapper.model.Employee;
+import com.niit.skillmapper.dao.*;
+import com.niit.skillmapper.model.*;
 
 @RestController
 public class LoginValidationController {

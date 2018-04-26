@@ -12,17 +12,15 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.niit.skillmapper.config.HibernateConfiguration;
-import com.niit.skillmapper.dao.daoimpl.EmployeeDAO;
-import com.niit.skillmapper.dao.EmployeeDAOInterface;
-import com.niit.skillmapper.model.Employee;
+
 
 @RunWith(SpringRunner.class)
 @SpringJUnitConfig(classes = HibernateConfiguration.class)
 public class EmployeeTestCase {
 	@Autowired
-	EmployeeDAOInterface employeeDAOInterface;
+	EmployeeDAOInterface employeeDAOInterface;*/
 
-	@Test
+/*	@Test
 	public void testAddEmployee() {
 		Employee emp = new Employee();
 		emp.setEmployeeId(3);
@@ -91,7 +89,7 @@ public class EmployeeTestCase {
 		emplist=employeeDAOInterface.getEmployeeByRegion("Delhi");
 		Assert.assertNotNull("Values are reterived", emplist);
 	}
-	
+*/	/*
 	@Test
 	public void testskill()
 	{

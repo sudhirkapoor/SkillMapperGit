@@ -26,7 +26,7 @@ public class CertificationDAO implements CertificationDAOInterface{
 
 	@Autowired
 	private SessionFactory sessionFactory;
-	@Override
+
 	public boolean addCertification(Certification certification) {
 		try {
 			sessionFactory.getCurrentSession().save(certification);
@@ -38,7 +38,6 @@ public class CertificationDAO implements CertificationDAOInterface{
 		}
 	}
 
-	@Override
 	public boolean deleteCertification(int certificateId) {
 		try {
 			sessionFactory.getCurrentSession().delete(getCertificateById(certificateId));
@@ -49,7 +48,7 @@ public class CertificationDAO implements CertificationDAOInterface{
 		}
 	}
 
-	@Override
+
 	public boolean updateCertification(Certification certification) {
 		try {
 			sessionFactory.getCurrentSession().update(certification);
@@ -61,7 +60,6 @@ public class CertificationDAO implements CertificationDAOInterface{
 		}
 	}
 
-	@Override
 	public Certification getCertificateById(int certificationId) {
 		try
 		{
@@ -74,7 +72,6 @@ public class CertificationDAO implements CertificationDAOInterface{
 		}
 	}
 
-	@Override
 	public List<Certification> getAllCertificates() {
 		try
 		{
@@ -87,7 +84,6 @@ public class CertificationDAO implements CertificationDAOInterface{
 		}
 	}
 
-	@Override
 	public List<Certification> getCertificatesByEmployeeId(int empId) {
 		try
 		{
@@ -103,7 +99,7 @@ public class CertificationDAO implements CertificationDAOInterface{
 		}
 	}
 
-	@Override
+
 	public List<Certification> getCertificatesByName(String certificationName) {
 		try
 		{
